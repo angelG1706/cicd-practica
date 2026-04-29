@@ -43,7 +43,7 @@ jobs:
             --cov-fail-under=80
 
       - name: Subir reporte de cobertura
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: reporte-cobertura
           path: coverage.xml
