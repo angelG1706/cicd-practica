@@ -1,9 +1,8 @@
-cat > .github/workflows/pipeline.yml << 'EOF'
 name: Pipeline CI/CD Completo
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -28,11 +27,7 @@ jobs:
 
       - name: Ejecutar pruebas con cobertura
         run: |
-          pytest test_app.py -v \
-            --cov=app \
-            --cov-report=term-missing \
-            --cov-report=xml \
-            --cov-fail-under=80
+          pytest test_app.py -v --cov=app --cov-report=term-missing --cov-report=xml --cov-fail-under=80
 
       - name: Subir reporte de cobertura
         uses: actions/upload-artifact@v4
@@ -54,9 +49,7 @@ jobs:
 
       - name: Verificar que la imagen funciona
         run: |
-          docker run -d --name test-container \
-            -p 5000:5000 \
-            cicd-practica:${{ github.sha }}
+          docker run -d --name test-container -p 5000:5000 cicd-practica:${{ github.sha }}
           sleep 3
           curl --fail http://localhost:5000/salud
           docker stop test-container
@@ -71,8 +64,6 @@ jobs:
 
       - name: Simular deploy
         run: |
-          echo "Desplegando version: ${{ github.sha }}"
-          echo "Imagen: cicd-practica:${{ github.sha }}"
+          echo "Desplegando version ${{ github.sha }}"
           echo "Deploy completado exitosamente"
           echo "App disponible en produccion"
-EOF
