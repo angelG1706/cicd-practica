@@ -44,9 +44,11 @@ jobs:
 
       - name: Subir reporte de cobertura
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: reporte-cobertura
           path: coverage.xml
+          if-no-files-found: ignore
 
   # ─────────────────────────────────────────
   # JOB 2: BUILD DOCKER (solo si pruebas pasan)
